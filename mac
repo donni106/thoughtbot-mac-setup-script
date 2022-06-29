@@ -70,7 +70,7 @@ update_shell() {
 
 case "$SHELL" in
   */zsh)
-    if [ "$(command -v zsh)" != '/usr/local/bin/zsh' ] ; then
+    if [ "$(command -v zsh)" != '/bin/zsh' ] ; then
       update_shell
     fi
     ;;
@@ -107,26 +107,12 @@ brew update --force # https://github.com/Homebrew/brew/issues/1151
 brew bundle --file=- <<EOF
 tap "thoughtbot/formulae"
 tap "homebrew/services"
-tap "heroku/brew"
 
 # Unix
-brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 brew "git"
 brew "openssl"
-brew "rcm"
-brew "reattach-to-user-namespace"
-brew "the_silver_searcher"
-brew "tmux"
 brew "vim"
 brew "watchman"
-brew "zsh"
-
-# Heroku
-brew "heroku/brew/heroku"
-brew "parity"
-
-# GitHub
-brew "gh"
 
 # Image manipulation
 brew "imagemagick"
@@ -134,17 +120,12 @@ brew "imagemagick"
 # Programming language prerequisites and package managers
 brew "libyaml" # should come after openssl
 brew "coreutils"
-brew "yarn"
 cask "gpg-suite-no-mail"
 
 # Databases
 brew "postgres", restart_service: :changed
 brew "redis", restart_service: :changed
 EOF
-
-fancy_echo "Update heroku binary ..."
-brew unlink heroku
-brew link --force heroku
 
 fancy_echo "Configuring asdf version manager ..."
 if [ ! -d "$HOME/.asdf" ]; then
@@ -168,6 +149,8 @@ add_or_update_asdf_plugin() {
 . "$(brew --prefix asdf)/asdf.sh"
 add_or_update_asdf_plugin "ruby" "https://github.com/asdf-vm/asdf-ruby.git"
 add_or_update_asdf_plugin "nodejs" "https://github.com/asdf-vm/asdf-nodejs.git"
+add_or_update_asdf_plugin "yarn" "https://github.com/twuni/asdf-yarn.git"
+add_or_update_asdf_plugin "mysql" "https://github.com/iroddis/asdf-mysql.git"
 
 install_asdf_language() {
   local language="$1"
@@ -188,6 +171,13 @@ bundle config --global jobs $((number_of_cores - 1))
 
 fancy_echo "Installing latest Node ..."
 install_asdf_language "nodejs"
+
+fancy_echo "Installing latest Yarn ..."
+install_asdf_language "yarn"
+
+fancy_echo "Installing latest MySQL ..."
+install_asdf_language "mysql"
+fancy_echo "Visit https://github.com/iroddis/asdf-mysql#setup to setup the MySQL database"
 
 if [ -f "$HOME/.laptop.local" ]; then
   fancy_echo "Running your customizations from ~/.laptop.local ..."
