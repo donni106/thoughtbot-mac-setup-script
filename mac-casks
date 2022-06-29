@@ -1,0 +1,38 @@
+fancy_echo "Installing cask applications"
+
+# Browsers
+brew install --cask \
+  brave-browser \
+  choosy \
+  firefox \
+  google-chrome \
+  microsoft-edge \
+  opera \
+  sizzy
+
+# Development
+brew install --cask \
+  android-studio \
+  dbeaver-community \
+  docker \
+  flipper \
+  fork \
+  insomnia \
+  mjml \
+  sublime-text \
+  zulu
+
+# Others
+brew install --cask \
+  1password \
+  cron \
+  discord \
+  gimp \
+  gotomeeting \
+  maccy \
+  notion \
+  numi \
+  openoffice \
+  slack \
+  webex-meetings \
+  zoom
